@@ -14,6 +14,6 @@ public interface FXDealsRepository extends JpaRepository<FXDeal, Long> {
     boolean existsByDealUniqueId(String uniqueId);
 
     @Query("SELECT new com.bloomberg.clustereddatawarehouse.dtos.responses.FXDealsResponse(" +
-            " fxd.dealUniqueId, fxd.fromISOCode, fxd.toISOCode, fxd.dealAmount, fxd.dealCreatedOn) FROM FXDeal fxd")
+            "fxd.Id, fxd.dealUniqueId, fxd.fromISOCode, fxd.toISOCode, fxd.dealAmount, fxd.dealCreatedOn) FROM FXDeal fxd")
     Page<FXDealsResponse> findAllFXDealsResponse(Pageable pageable);
 }

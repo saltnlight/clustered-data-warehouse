@@ -7,10 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @ResponseBody
-@ControllerAdvice(annotations = RestController.class)
+@ControllerAdvice
 public class DataWarehouseApiAdvice {
 
     @ExceptionHandler(FutureDateException.class)
