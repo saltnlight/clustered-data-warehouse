@@ -5,8 +5,6 @@ import com.bloomberg.clustereddatawarehouse.dtos.responses.FXDealsResponse;
 import com.bloomberg.clustereddatawarehouse.exceptions.*;
 import com.bloomberg.clustereddatawarehouse.models.FXDeal;
 import com.bloomberg.clustereddatawarehouse.repositories.FXDealsRepository;
-import com.bloomberg.clustereddatawarehouse.utils.Validations;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,8 +28,6 @@ class FXDealServiceImplTest {
     private FXDealsRequest fxDealsRequest;
     private FXDealsResponse fxDealsResponse;
 
-    @Mock
-    private Validations validations;
     @Mock
     private FXDealsRepository fxDealsRepository;
 
@@ -74,18 +70,26 @@ class FXDealServiceImplTest {
     }
 
     @Test
-    void saveDealThrowInvalidAmountException() {
-        fxDealsRequest.setDealAmount(BigDecimal.ZERO);
-        assertThrows(InvalidAmountException.class, () -> fxDealService.saveDeals(fxDealsRequest));
+    void unsuccessfullySaveDeals() {
+        when(fxDealsRepository.existsByDealUniqueId(fxDealsRequest.getDealUniqueId())).thenReturn(true);
+        assertThrows(UniqueIdExistsException.class, () -> fxDealService.saveDeals(fxDealsRequest));
     }
 
     @Test
-    void saveDealThrowSameISOCurrencyException() {
+    void saveDealThrowsException() {
         fxDealsRequest.setToISOCode("JOD");
         assertThrows(SameISOCurrencyException.class, () -> fxDealService.saveDeals(fxDealsRequest));
-    }
 
-    @AfterEach
-    void tearDown() {
+        fxDealsRequest.setToISOCode("NGN");
+        fxDealsRequest.setFromISOCode("aaa");
+        assertThrows(InvalidISOCodeException.class, () -> fxDealService.saveDeals(fxDealsRequest));
+
+        fxDealsRequest.setFromISOCode("JOD");
+        fxDealsRequest.setDealAmount(BigDecimal.ZERO);
+        assertThrows(InvalidAmountException.class, () -> fxDealService.saveDeals(fxDealsRequest));
+
+        fxDealsRequest.setDealAmount(BigDecimal.valueOf(500));
+        fxDealsRequest.setDealUniqueId(" ");
+        assertThrows(BlankStringException.class, () -> fxDealService.saveDeals(fxDealsRequest));
     }
 }
