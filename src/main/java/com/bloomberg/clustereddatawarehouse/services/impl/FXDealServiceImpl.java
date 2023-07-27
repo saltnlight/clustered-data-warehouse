@@ -25,7 +25,7 @@ public class FXDealServiceImpl implements FXDealService {
     public FXDealsResponse saveDeals(FXDealsRequest fxDealsRequest) {
         Validations.isValidFXDeal(fxDealsRequest);
         if (fxDealsRepository.existsByDealUniqueId(fxDealsRequest.getDealUniqueId())) {
-            throw new UniqueIdExistsException("");
+            throw new UniqueIdExistsException(String.format("A deal with the uniqueId %s already exists", fxDealsRequest.getDealUniqueId()));
         }
         FXDeal fxDeal = new FXDeal();
         FXDealsResponse fxDealsResponse = new FXDealsResponse();
