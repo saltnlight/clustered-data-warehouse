@@ -11,9 +11,9 @@ public class FutureDateException extends RuntimeException {
         super(message);
     }
 
-    public FutureDateException(String message, Object data) {
+    public FutureDateException(int status, String message) {
         super(message);
-        this.data = data;
+        this.status = status;
     }
 
     public FutureDateException(int status, String message, Object data) {

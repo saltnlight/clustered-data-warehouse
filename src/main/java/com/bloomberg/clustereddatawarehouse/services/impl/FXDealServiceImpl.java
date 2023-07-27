@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 
@@ -25,7 +26,9 @@ public class FXDealServiceImpl implements FXDealService {
     public FXDealsResponse saveDeals(FXDealsRequest fxDealsRequest) {
         Validations.isValidFXDeal(fxDealsRequest);
         if (fxDealsRepository.existsByDealUniqueId(fxDealsRequest.getDealUniqueId())) {
-            throw new UniqueIdExistsException(String.format("A deal with the uniqueId %s already exists", fxDealsRequest.getDealUniqueId()));
+            throw new UniqueIdExistsException(
+                    HttpStatus.BAD_REQUEST.value(),
+                    String.format("A deal with the uniqueId %s already exists", fxDealsRequest.getDealUniqueId()));
         }
         FXDeal fxDeal = new FXDeal();
         FXDealsResponse fxDealsResponse = new FXDealsResponse();

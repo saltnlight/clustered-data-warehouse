@@ -11,9 +11,9 @@ public class InvalidAmountException extends RuntimeException {
         super(message);
     }
 
-    public InvalidAmountException(String message, Object data) {
+    public InvalidAmountException(int status, String message) {
         super(message);
-        this.data = data;
+        this.status = status;
     }
 
     public InvalidAmountException(int status, String message, Object data) {

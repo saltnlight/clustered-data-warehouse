@@ -3,20 +3,19 @@ package com.bloomberg.clustereddatawarehouse.exceptions;
 import lombok.Data;
 
 @Data
-public class InvalidISOCodeException extends RuntimeException {
+public class RequiredFieldException extends RuntimeException {
     private int status;
     private Object data;
-
-    public InvalidISOCodeException(String message) {
+    public RequiredFieldException(String message) {
         super(message);
     }
 
-    public InvalidISOCodeException(int status, String message) {
+    public RequiredFieldException(int status, String message) {
         super(message);
         this.status = status;
     }
 
-    public InvalidISOCodeException(int status, String message, Object data) {
+    public RequiredFieldException(int status, String message, Object data) {
         super(message);
         this.data = data;
         this.status = status;

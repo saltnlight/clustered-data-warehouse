@@ -1,12 +1,9 @@
 package com.bloomberg.clustereddatawarehouse.utils;
 
 import com.bloomberg.clustereddatawarehouse.dtos.requests.FXDealsRequest;
-import com.bloomberg.clustereddatawarehouse.exceptions.BlankStringException;
-import com.bloomberg.clustereddatawarehouse.exceptions.FutureDateException;
-import com.bloomberg.clustereddatawarehouse.exceptions.InvalidAmountException;
-import com.bloomberg.clustereddatawarehouse.exceptions.InvalidISOCodeException;
-import com.bloomberg.clustereddatawarehouse.exceptions.SameISOCurrencyException;
+import com.bloomberg.clustereddatawarehouse.exceptions.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -16,29 +13,32 @@ import java.util.Currency;
 public abstract class Validations {
 
     public static void isValidFXDeal(FXDealsRequest fxDealsRequest) {
-        String uniqueId = fxDealsRequest.getDealUniqueId().trim();
-        String fromISO = fxDealsRequest.getFromISOCode().trim();
-        String toISO = fxDealsRequest.getToISOCode().trim();
+        String uniqueId = fxDealsRequest.getDealUniqueId();
+        String fromISO = fxDealsRequest.getFromISOCode();
+        String toISO = fxDealsRequest.getToISOCode();
         BigDecimal amount = fxDealsRequest.getDealAmount();
         Timestamp createdOn = fxDealsRequest.getDealCreatedOn();
 
+        if (uniqueId == null || fromISO == null || toISO == null || amount == null || createdOn == null) {
+            throw new RequiredFieldException(HttpStatus.BAD_REQUEST.value(), "All fields are required");
+        }
         if (StringUtils.isBlank(uniqueId)) {
-            throw new BlankStringException("A deal's unique identifier can not be null");
+            throw new BlankStringException(HttpStatus.BAD_REQUEST.value(), "A deal's unique identifier can not be null");
         }
         if (!StringUtils.isBlank(fromISO) && !isValidCurrency(fromISO)) {
-            throw new InvalidISOCodeException("The ordering currency is not valid");
+            throw new InvalidISOCodeException(HttpStatus.BAD_REQUEST.value(), "The ordering currency is not valid");
         }
         if (!StringUtils.isBlank(toISO) && !isValidCurrency(toISO)) {
-            throw new InvalidISOCodeException("The receiving currency is not valid");
+            throw new InvalidISOCodeException(HttpStatus.BAD_REQUEST.value(), "The receiving currency is not valid");
         }
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0 ) {
-            throw new InvalidAmountException("Deal amount can not be less than Zero");
+        if (amount.compareTo(BigDecimal.ZERO) <= 0 ) {
+            throw new InvalidAmountException(HttpStatus.BAD_REQUEST.value(), "Deal amount can not be less than Zero");
         }
         if (fromISO.equalsIgnoreCase(toISO)) {
-            throw new SameISOCurrencyException("The ordering currency and receiving currency can not be the same");
+            throw new SameISOCurrencyException(HttpStatus.BAD_REQUEST.value(), "The ordering currency and receiving currency can not be the same");
         }
         if (createdOn.after(Timestamp.valueOf(LocalDateTime.now()))) {
-            throw new FutureDateException("A deal can not be created with a future date");
+            throw new FutureDateException(HttpStatus.BAD_REQUEST.value(), "A deal can not be created with a future date");
         }
     }
 

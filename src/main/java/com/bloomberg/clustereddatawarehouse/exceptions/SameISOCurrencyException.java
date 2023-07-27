@@ -7,9 +7,9 @@ public class SameISOCurrencyException extends RuntimeException {
         super(message);
     }
 
-    public SameISOCurrencyException(String message, Object data) {
+    public SameISOCurrencyException(int status, String message) {
         super(message);
-        this.data = data;
+        this.status = status;
     }
 
     public SameISOCurrencyException(int status, String message, Object data) {

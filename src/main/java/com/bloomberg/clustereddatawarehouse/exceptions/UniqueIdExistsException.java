@@ -15,9 +15,8 @@ public class UniqueIdExistsException extends RuntimeException {
         this.data = data;
     }
 
-    public UniqueIdExistsException(int status, String message, Object data) {
+    public UniqueIdExistsException(int status, String message) {
         super(message);
-        this.data = data;
         this.status = status;
     }
 }

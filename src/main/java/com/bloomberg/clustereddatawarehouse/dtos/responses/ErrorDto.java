@@ -22,4 +22,8 @@ public class ErrorDto implements Serializable {
         this.message = message;
         this.data = data;
     }
+
+    public ErrorDto(String message) {
+        this.message = message;
+    }
 }

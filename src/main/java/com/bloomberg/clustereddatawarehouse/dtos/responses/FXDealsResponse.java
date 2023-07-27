@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class FXDealsResponse {
 
+    private Long id;
     private String dealUniqueId;
     private String fromISOCode;
     private String toISOCode;

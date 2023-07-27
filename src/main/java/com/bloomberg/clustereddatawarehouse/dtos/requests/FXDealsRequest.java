@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -14,9 +15,14 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class FXDealsRequest {
 
+    @NonNull
     private String dealUniqueId;
+    @NonNull
     private String fromISOCode;
+    @NonNull
     private String toISOCode;
+    @NonNull
     private BigDecimal dealAmount;
+    @NonNull
     private Timestamp dealCreatedOn;
 }

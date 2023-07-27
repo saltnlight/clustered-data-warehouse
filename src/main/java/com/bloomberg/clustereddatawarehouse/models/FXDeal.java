@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "fx_deal")
+@Table(name = "fx_deals")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
