@@ -1,0 +1,17 @@
+spring:
+  application:
+    name:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/clustered_data_warehouse?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&useUnicode=true&useSSL=false&autoReconnect=true
+    username: root
+    password:
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+
+logging:
+  level:
+    org.hibernate.sql: DEBUG
+
+server:
+  port: 9001
